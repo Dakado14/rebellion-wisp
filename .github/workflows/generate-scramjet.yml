@@ -1,0 +1,42 @@
+
+name: Generate Scramjet
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Project Rebellion repository
+        uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Get Scramjet project builder
+        run: git clone --depth 1 https://github.com/crllect/ProxDocs.git /tmp/proxdocs
+
+      - name: Generate Scramjet
+        run: |
+          rm -rf scramjet-app
+          node /tmp/proxdocs/builder/cli.js \
+            --out ./scramjet-app \
+            --preset minimal \
+            --package-manager npm \
+            --runtime node \
+            --name rebellion-scramjet
+
+      - name: Save generated files to GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scramjet-app
+          git diff --cached --quiet || git commit -m "Generate Scramjet app"
+          git push
