@@ -1,0 +1,13 @@
+
+{
+  "name": "rebellion-wisp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@mercuryworkshop/wisp-js": "0.4.0",
+    "ws": "^8.18.0"
+  }
+}
