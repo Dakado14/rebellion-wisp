@@ -3,11 +3,11 @@
   "name": "rebellion-wisp",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "@mercuryworkshop/wisp-js": "0.4.0",
-    "ws": "^8.18.0"
+    "@mercuryworkshop/wisp-js": "0.4.0"
   }
 }
