@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get Project Rebellion repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Node
@@ -20,8 +20,12 @@ jobs:
         with:
           node-version: 22
 
-      - name: Get Scramjet project builder
-        run: git clone --depth 1 https://github.com/crllect/ProxDocs.git/tmp/proxdocs
+      - name: Download Scramjet builder
+        run: git clone --depth 1 https://github.com/crllect/ProxDocs.git /tmp/proxdocs
+
+      - name: Install builder dependencies
+        run: npm install --ignore-scripts
+        working-directory: /tmp/proxdocs
 
       - name: Generate Scramjet
         run: |
@@ -30,10 +34,9 @@ jobs:
             --out ./scramjet-app \
             --preset minimal \
             --package-manager npm \
-            --runtime node \
-            --name rebellion-scramjet
+            --runtime node
 
-      - name: Save generated files to GitHub
+      - name: Save generated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
