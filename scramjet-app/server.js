@@ -27,7 +27,12 @@ app.use(express.static(staticRoot, {
     }
 }));
 const handleRequest = (req, res) => {
-    app(req, res);
+    app.use((_req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+});
 };
 const server = http.createServer(handleRequest);
 server.on("upgrade", (req, socket, head) => {
