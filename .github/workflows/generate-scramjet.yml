@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Get Scramjet project builder
-        run: git clone --depth 1 https://github.com/crllect/ProxDocs.git /tmp/proxdocs
+        run: git clone --depth 1 https://github.com/crllect/ProxDocs.git/tmp/proxdocs
 
       - name: Generate Scramjet
         run: |
