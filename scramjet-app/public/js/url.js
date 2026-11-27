@@ -57,9 +57,16 @@ export const resolveInput = (input, searchTemplate) => {
             return { url: "", kind: "blocked" };
         }
     }
-    return {
-        url: searchTemplate.replace("%s", encodeURIComponent(text)),
-        kind: "search"
+    const template =
+    typeof searchTemplate === "string" &&
+    searchTemplate.includes("%s")
+        ? searchTemplate
+        : "https://duckduckgo.com/?q=%s";
+
+return {
+    url: template.replace("%s", encodeURIComponent(text)),
+    kind: "search"
+};
     };
 };
 export const formatForDisplay = (url) => {
