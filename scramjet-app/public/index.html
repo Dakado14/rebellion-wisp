@@ -46,43 +46,62 @@
 		<main id="frames" class="frames"></main>
 
 		<script type="module" src="/js/app.js"></script>
-	<script>
-window.addEventListener("message", function(event) {
-  if (event.source !== window.parent) return;
+	<script type="module" src="/js/app.js"></script>
 
- <script>
+<script>
 window.addEventListener("message", function(event) {
   if (event.source !== window.parent) return;
 
   const data = event.data;
+
   if (!data || data.source !== "PROJECT_REBELLION") return;
-  if (data.type !== "navigate") return;
-  if (typeof data.url !== "string") return;
-  if (!/^https?:\/\//i.test(data.url)) return;
 
-  const addressInput = document.querySelector("input");
-  if (!addressInput) return;
+  if (data.type === "navigate") {
+    if (typeof data.url !== "string") return;
 
-  const valueSetter = Object.getOwnPropertyDescriptor(
-    HTMLInputElement.prototype,
-    "value"
-  ).set;
+    let parsed;
 
-  valueSetter.call(addressInput, data.url);
-  addressInput.dispatchEvent(
-    new Event("input", { bubbles: true })
-  );
+    try {
+      parsed = new URL(data.url);
+    } catch {
+      return;
+    }
 
-  addressInput.dispatchEvent(
-    new KeyboardEvent("keydown", {
-      key: "Enter",
-      code: "Enter",
-      keyCode: 13,
-      which: 13,
-      bubbles: true
-    })
-  );
+    if (
+      parsed.protocol !== "https:" &&
+      parsed.protocol !== "http:"
+    ) {
+      return;
+    }
+
+    const addressInput = document.getElementById("address");
+    const form = document.getElementById("omnibox");
+
+    if (!addressInput || !form) return;
+
+    addressInput.value = parsed.href;
+
+    addressInput.dispatchEvent(
+      new Event("input", { bubbles: true })
+    );
+
+    form.requestSubmit();
+    return;
+  }
+
+  const buttons = {
+    back: "back",
+    forward: "forward",
+    reload: "reload"
+  };
+
+  const buttonId = buttons[data.type];
+
+  if (buttonId) {
+    document.getElementById(buttonId)?.click();
+  }
 });
 </script>
-	</body>
+
+</body>
 </html>
