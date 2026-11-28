@@ -47,10 +47,37 @@ server.on("upgrade", (req, socket, head) => {
 const listenWithFallback = (target, startPort, attempts = 20) => {
     let port = startPort;
     let left = attempts;
+
     const onError = (error) => {
         if (error.code !== "EADDRINUSE" || left-- <= 0) {
-            console.error(`Could not listen on port ${port}: ${error.message}`);
+            console.error(
+                `Could not listen on port ${port}: ${error.message}`
+            );
             process.exit(1);
+        }
+
+        console.warn(
+            `Port ${port} is in use, trying ${port + 1}...`
+        );
+
+        port += 1;
+        target.listen(port, "0.0.0.0");
+    };
+
+    target.on("error", onError);
+
+    target.listen(port, "0.0.0.0", () => {
+        target.off("error", onError);
+
+        process.send?.({ type: "listening", port });
+
+        console.log(
+            process.env.BACKEND_ONLY
+                ? `Backend listening on 0.0.0.0:${port}`
+                : `Scramjet App listening on 0.0.0.0:${port}`
+        );
+    });
+};
         }
         console.warn(`Port ${port} is in use, trying ${port + 1}...`);
         port += 1;
