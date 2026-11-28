@@ -2,15 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
 
 :root {
-  color-scheme: dark;
+  --line: #263b59;
 
-  --bg: #090c10;
-  --bg-alt: #14191f;
-  --fg: #e4e8ed;
-  --fg-dim: #929eaa;
+--silver-gradient: linear-gradient(
+  125deg,
+  #071426 0%,
+  #102844 22%,
+  #42658b 47%,
+  #1c3b60 72%,
+  #071426 100%
+);
 
-  --line: #343e49;
-  --accent: #e5c47e;
+--silver-glow: 0 0 16px rgba(65, 125, 190, 0.18);
 
   --gold-gradient: linear-gradient(
     125deg,
