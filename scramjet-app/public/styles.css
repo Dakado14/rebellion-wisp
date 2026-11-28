@@ -421,18 +421,27 @@ select:focus-visible {
 
 /* WEBSITE DISPLAY */
 
+/* WEBSITE DISPLAY — FULL SIZE */
+
 .frame {
   position: absolute;
-  inset: 2px;
+  top: 2px;
+  left: 2px;
 
-  width: auto;
-  height: auto;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
 
   border: 0;
   border-radius: 8px;
   display: none;
 
   background: #090c10;
+}
+
+/* KEEP THE ACTIVE WEBSITE VISIBLE */
+
+.frame--active {
+  display: block;
 }
 
 .frame--active {
